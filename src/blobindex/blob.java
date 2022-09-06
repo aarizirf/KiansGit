@@ -12,7 +12,8 @@ public class Blob {
 	private String fileContent;
 	private String sha1; 
 	
-	public Blob (Path filePath) throws FileNotFoundException, IOException {
+	public Blob (String fileName) throws FileNotFoundException, IOException {
+		Path filePath = Paths.get(fileName);
 		fileContent = Files.readString(filePath);
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
@@ -26,10 +27,7 @@ public class Blob {
 	}
 	
 	public void createFile() throws IOException {
-		String path = "/Users/kianchen/eclipse-workspace/blobindex/src/blobindex/test/objects/" + sha1 + ".txt";
-		Path textFilePath = Paths.get(path);
-		Files.createFile(textFilePath);
-		PrintWriter pw = new PrintWriter (sha1 + ".txt");
+		PrintWriter pw = new PrintWriter ("test/objects/" + sha1 + ".txt");
 		System.out.println(fileContent);
 		pw.println(fileContent);
 		pw.close();
@@ -40,9 +38,7 @@ public class Blob {
 	}
 	
 	public static void main (String [] args) throws FileNotFoundException, IOException {
-		Path filePath = Paths.get("/Users/kianchen/eclipse-workspace/blobindex/src/blobindex/test/something.txt");
-		System.out.println (filePath);
-		Blob blobby = new Blob (filePath);
+		Blob blobby = new Blob ("./test/something.txt");
 		System.out.println(blobby.getSha1());
 	}
 }
