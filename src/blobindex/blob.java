@@ -28,13 +28,16 @@ public class Blob {
 	
 	public void createFile() throws IOException {
 		PrintWriter pw = new PrintWriter ("test/objects/" + sha1 + ".txt");
-		System.out.println(fileContent);
 		pw.println(fileContent);
 		pw.close();
 	}
 	
 	public String getSha1 () {
 		return sha1;
+	}
+	
+	public String getFileContent() {
+		return fileContent;
 	}
 	
 	public static void main (String [] args) throws FileNotFoundException, IOException {
