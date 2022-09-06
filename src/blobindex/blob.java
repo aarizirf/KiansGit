@@ -15,6 +15,7 @@ public class Blob {
 	public Blob (String fileName) throws FileNotFoundException, IOException {
 		Path filePath = Paths.get(fileName);
 		fileContent = Files.readString(filePath);
+		System.out.println ("Reading contents of " + fileName + ": " + fileContent);
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
 	        digest.reset();
@@ -31,6 +32,7 @@ public class Blob {
 		System.out.println(fileContent);
 		pw.println(fileContent);
 		pw.close();
+		System.out.println("Creating new blob " + sha1 + " from content: " + fileContent);
 	}
 	
 	public String getSha1 () {

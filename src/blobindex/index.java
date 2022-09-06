@@ -16,7 +16,10 @@ public class Index {
 		File objDir = new File ("test/objects");
 	}
 	
-	public void add(String fileName) {
-		
+	public void add(String fileName) throws FileNotFoundException, IOException {
+		Blob blobby = new Blob("./test/" + fileName);
+		pairs.put(fileName, blobby.getSha1());
+		PrintWriter printWrite = new PrintWriter (indexFile);
+		printWrite.println(pairs);
 	}
 }
