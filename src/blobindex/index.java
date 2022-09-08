@@ -4,11 +4,11 @@ import java.util.*;
 import java.io.*;
 
 public class Index {
-	private HashMap<String, String> pairs; 
+	private HashMap<String, String> indexPairs; 
 	private File indexFile;
 	
 	public Index() {
-		pairs = new HashMap<String, String>();
+		indexPairs = new HashMap<String, String>();
 	}
 	
 	public void init() {
@@ -18,19 +18,19 @@ public class Index {
 	
 	public void add(String fileName) throws FileNotFoundException, IOException {
 		Blob blobby = new Blob("./test/" + fileName);
-		pairs.put(fileName, blobby.getSha1());
+		indexPairs.put(fileName, blobby.getSha1());
 		write();
 	}
 	
 	public void remove(String fileName) throws FileNotFoundException {
-		File myObj = new File("test/objects/" + pairs.get(fileName) + ".txt"); 
+		File myObj = new File("test/objects/" + indexPairs.get(fileName) + ".txt"); 
 	    if (myObj.delete()) { 
 	    	System.out.println("Deleted the file: " + myObj.getName());
 	    } 
 	    else {
 	    	System.out.println("Failed to delete the file.");
 	    } 
-		pairs.remove(fileName);
+		indexPairs.remove(fileName);
 		indexFile.delete();
 		indexFile = new File ("test/index.txt");
 		write();
@@ -38,8 +38,8 @@ public class Index {
 	
 	private void write() throws FileNotFoundException {
 		PrintWriter printWrite = new PrintWriter (indexFile);
-		for (String key: pairs.keySet()) {
-			printWrite.println (key + " : " + pairs.get(key));
+		for (String key: indexPairs.keySet()) {
+			printWrite.println (key + " : " + indexPairs.get(key));
 		}
 		printWrite.close();
 	}
