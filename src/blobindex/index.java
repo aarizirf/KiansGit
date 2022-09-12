@@ -31,8 +31,6 @@ public class Index {
 	    	System.out.println("Failed to delete the file.");
 	    } 
 		indexPairs.remove(fileName);
-		indexFile.delete();
-		indexFile = new File ("test/index.txt");
 		write();
 	}
 	
