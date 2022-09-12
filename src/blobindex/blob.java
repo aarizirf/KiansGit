@@ -28,7 +28,7 @@ public class Blob {
 	}
 	
 	public void createFile() throws IOException {
-		PrintWriter pw = new PrintWriter ("test/objects/" + sha1 + ".txt");
+		PrintWriter pw = new PrintWriter ("test/objects/" + sha1);
 		System.out.println(fileContent);
 		pw.println(fileContent);
 		pw.close();

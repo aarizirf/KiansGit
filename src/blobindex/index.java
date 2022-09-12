@@ -12,7 +12,7 @@ public class Index {
 	}
 	
 	public void init() {
-		indexFile = new File ("test/index.txt");
+		indexFile = new File ("test/index");
 		new File ("test/objects").mkdirs();
 	}
 	
@@ -23,7 +23,7 @@ public class Index {
 	}
 	
 	public void remove(String fileName) throws FileNotFoundException {
-		File myObj = new File("test/objects/" + indexPairs.get(fileName) + ".txt"); 
+		File myObj = new File("test/objects/" + indexPairs.get(fileName)); 
 	    if (myObj.delete()) { 
 	    	System.out.println("Deleted the file: " + myObj.getName());
 	    } 
