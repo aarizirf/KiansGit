@@ -42,12 +42,13 @@ public class Index {
 		printWrite.close();
 	}
 	
-	public static void main (String [] args) throws FileNotFoundException, IOException {
+	/**public static void main (String [] args) throws FileNotFoundException, IOException {
 		Index git = new Index();
 		git.init();
 		git.add("foo.txt");
 		git.add("bar.txt");
 		git.add("foobar.txt");
+		git.add("something.txt");
 		git.remove("foo.txt");
-	}
+	}**/
 }

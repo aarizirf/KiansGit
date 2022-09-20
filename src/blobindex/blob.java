@@ -30,7 +30,7 @@ public class Blob {
 	public void createFile() throws IOException {
 		PrintWriter pw = new PrintWriter ("test/objects/" + sha1);
 		System.out.println(fileContent);
-		pw.println(fileContent);
+		pw.print(fileContent);
 		pw.close();
 		System.out.println("Creating new blob " + sha1 + " from content: " + fileContent);
 	}
@@ -39,8 +39,8 @@ public class Blob {
 		return sha1;
 	}
 	
-	public static void main (String [] args) throws FileNotFoundException, IOException {
+	/**public static void main (String [] args) throws FileNotFoundException, IOException {
 		Blob blobby = new Blob ("./test/something.txt");
 		System.out.println(blobby.getSha1());
-	}
+	}**/
 }
