@@ -18,8 +18,38 @@ public class Index {
 	
 	public void add(String fileName) throws FileNotFoundException, IOException {
 		Blob blobby = new Blob("./test/" + fileName);
-		indexPairs.put(fileName, blobby.getSha1());
-		write();
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+        new FileOutputStream(indexFile, true), "UTF-8"));
+		writer.write(fileName + " : " + blobby.getSha1());
+		writer.write(System.getProperty( "line.separator" ));
+		writer.close();
+	}
+	
+	public void delete(String fn) {
+		try {
+			Writer writer = new BufferedWriter(new OutputStreamWriter(
+			        new FileOutputStream(indexFile, true), "UTF-8"));
+			writer.write("*" + fn);
+			writer.write(System.getProperty( "line.separator" ));
+
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void update(String fn) {
+		try {
+			Writer writer = new BufferedWriter(new OutputStreamWriter(
+			        new FileOutputStream(indexFile, true), "UTF-8"));
+			writer.write("#" + fn);
+			writer.write(System.getProperty( "line.separator" ));
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void remove(String fileName) throws FileNotFoundException {
@@ -40,6 +70,14 @@ public class Index {
 			printWrite.println (key + " : " + indexPairs.get(key));
 		}
 		printWrite.close();
+	}
+	
+	public void clearFile() throws IOException {
+		FileWriter fwOb = new FileWriter(indexFile); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
 	}
 	
 	/**public static void main (String [] args) throws FileNotFoundException, IOException {

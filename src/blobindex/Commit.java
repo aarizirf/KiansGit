@@ -1,22 +1,27 @@
 package blobindex;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Commit {
-	private String pTree;
+	Tree tree;
 	private String summary;
 	private String author;
 	private String parent;
 	private String child; 
 	private String date;
-	private String sha1;
+	String sha1;
 	
-	public Commit (String pTree, String summary, String author, String parent) throws FileNotFoundException {
-		this.pTree = pTree;
+	public Commit (String summary, String author, String parent) throws IOException {
+		
 		this.date = getDate();
 		this.parent = parent;
 		this.child = null;
@@ -24,17 +29,74 @@ public class Commit {
 		this.author = author;
 		String content = summary + date + author + parent;
 		this.sha1 = encrypt(content);
+		this.tree = generateTreeFromIndex();
 		writeToFile();
 	}
+	
+	private Tree generateTreeFromIndex() throws IOException {
+		ArrayList<String> treeLines = new ArrayList<>();
+		if(parent != null) {
+			treeLines.add("tree : " + getTreeFromCommit(parent));
+		}
+		File index = new File("test/index");
+		
+		BufferedReader br = new BufferedReader(new FileReader(index));
+	    String line;
+	    while ((line = br.readLine()) != null) {
+	    	switch(line.charAt(0)) {
+	    	case '*': //deleted
+	    		String lastTree = getTreeFromCommit(parent);
+	    		String treeWithFile = getTreeWithFile(lastTree, line.substring(1));
+	    		
+	    		break;
+	    	case '#': //edited
+	    		break;
+	    	default: //new blob
+	    		String hash = line.substring(line.length() - 40);
+	    		String fn = line.substring(0, line.length() - 43);
+	    		treeLines.add("blob : " + hash + " " + fn);
+	    	}
+	    }
 
-	private void writeToFile() throws FileNotFoundException {
+	    return new Tree(treeLines);
+	}
+	
+	public String getTreeFromCommit(String hash) throws IOException {
+		File file = new File("test/objects/" + hash);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+	    String line = br.readLine();
+	    return line;
+	}
+	
+	public String getTreeWithFile(String hash, String filename) throws IOException {
+		File file = new File("test/objects/" + hash);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+	    String line;
+	    while ((line = br.readLine()) != null) {
+	       // process the line.
+	    	if(line.charAt(0) == 't') {
+	    		return getTreeWithFile(line.substring(line.length()-40), filename);
+	    	} else {
+	    		String blobFn = line.substring(line.length() - filename.length());
+	    		System.out.println("BLOBFN " + blobFn);
+	    		if(blobFn.equals(filename)) return hash;
+	    	}
+	    }
+		return null;
+	
+	}
+	
+	
+	public void setParent(String sha) throws FileNotFoundException {
+		parent = sha;
+		writeToFile();
+	}
+	
+	public void writeToFile() throws FileNotFoundException {
 		PrintWriter printer = new PrintWriter("test/objects/" + sha1);
-		if(pTree==null) {
-			printer.println();
-		}
-		else {
-			printer.println(pTree);
-		}
+		
+		printer.println(tree.mySha);
+		
 		if(parent==null) {
 			printer.println();
 		}
@@ -73,9 +135,5 @@ public class Commit {
 			e.printStackTrace();
 		}
 		return sha1;
-	}
-	
-	public static void main (String [] args) throws FileNotFoundException {
-		Commit c = new Commit ("test/objects/dd4840f48a74c1f97437b515101c66834b59b1be", "The commit works!", "Kian Chen", null);
 	}
 }

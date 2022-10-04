@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Tree {
 	String content;
+	String mySha;
 	
 	public Tree (ArrayList<String> keyVal) throws FileNotFoundException {
 		content="";
@@ -15,8 +16,8 @@ public class Tree {
 			content=content+obj+"\n";
 		}
 		content = content.substring(0, content.length()-1);
-		String sha1 = encrypt(content);
-		PrintWriter writer = new PrintWriter ("test/objects/" + sha1);
+		mySha = encrypt(content);
+		PrintWriter writer = new PrintWriter ("test/objects/" + mySha);
 		writer.print(content);
 		writer.close();
 	}
