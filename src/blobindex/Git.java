@@ -16,14 +16,22 @@ public class Git {
 		Git g = new Git();
 		
 		g.addFile("foo.txt");
-//		g.updateFile("foobar.txt");
-//		g.deleteFile("bar.txt");
 		
 		g.commitChanges("First commit!", "aarizirf");
 		
 		g.addFile("foobar.txt");
 		
 		g.commitChanges("Second commit", "aarizirf");
+		
+		g.addFile("bar.txt");
+		
+		g.commitChanges("third", "aarizirf");
+		
+		g.addFile("lol.txt");
+		
+		g.commitChanges("fourth", "aarizirf");
+		
+		
 	}
 
 //	ACTUAL CLASS BEGINS
