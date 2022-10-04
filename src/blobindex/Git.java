@@ -37,13 +37,13 @@ public class Git {
  	}
  	
  	public void commitChanges(String summary, String author) throws IOException {
- 		Commit c = new Commit(summary, author, null);
+ 		String parent = current == null ? null : current.sha1;
+ 		Commit c = new Commit(summary, author, parent);
  		i.clearFile();
- 		if(current == null) {
- 			current = c;
- 		} else {
- 			c.setParent(current.sha1);
+ 		if(current != null) {
+ 			current.setParent(c.sha1);
  		}
+ 		current = c;
  		writeToHead(c.sha1);
  	}
  	
